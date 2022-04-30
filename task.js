@@ -1,51 +1,36 @@
-//Creating function for calculating amount
-const calculateAmount = (choice, amount) => {
-	//first installment should be 10% of total amount and
-	const installmentPayment = ((10 / 100) * amount).toFixed(2);
-	console.log(installmentPayment);
-	//now the remaining amount
-	const remainingTotalAmount = amount - installmentPayment;
-	//if he chooses weekly installment
-	if (choice == 'weekly') {
-		let weeklyPrice = 0;
-		let weekly = remainingTotalAmount / weeklyPrice;
-		//There are 156 weeks in 3 year so while loop is done
-		while (weekly > 156) {
-			//weekly installment should be multiple of 50
-			weeklyPrice = weeklyPrice + 50;
-			console.log(weeklyPrice);
-			//total week are counted for the total installment
-			let weeks = remainingTotalAmount / weeklyPrice;
-			console.log(weeks);
-			//now if the week are in decimal then ceil method is used to get nearesrt integer
-			if (weeks % weeklyPrice !== 0) {
-				weekly = Math.ceil(weeks);
-			}
-		}
-		console.log(`You will be paid ${weeklyPrice} for
-${weekly} weeks.`);
-		return { time: weekly, amount: weeklyPrice };
-		//if he chooses monthly installment
-	} else if (choice == 'monthly') {
-		let monthlyPrice = 0;
+const TOTAL_WEEKS_IN_THREE_YEARS = 156;
+const TOTAL_MONTHS_IN_THREE_YEARS = TOTAL_WEEKS_IN_THREE_YEARS * 4;
 
-		let monthly = remainingTotalAmount / monthlyPrice;
-		console.log(monthly);
-		//There are 36 weeks in 3 year so while loop is done
-		while (monthly > 36) {
-			monthlyPrice = monthlyPrice + 100;
-			//total months are counted for the total installment
-			let months = remainingTotalAmount / monthlyPrice;
-			console.log(months);
-			//now if the months are in decimal then ceil method is used to get nearest integer
-			if (months % monthlyPrice !== 0) {
-				monthly = Math.ceil(months);
-			}
-		}
-		console.log(`You will be paid ${monthlyPrice} for ${monthly} months.`);
-		return { time: monthly, amount: monthlyPrice };
+const formulatePayment = (choice, amount) => {
+	const initialPayment = (10 / 100) * amount;
+	const remainingAmount = amount - initialPayment;
+	if (choice === 'weekly') {
+		return calculateWeeklyPayment(remainingAmount);
+	}
+	calculateMontlyAmount(remainingAmount);
+};
+const calculateWeeklyPayment = remainingAmount => {
+	const weeklyPayment = remainingAmount / TOTAL_WEEKS_IN_THREE_YEARS;
+	if (weeklyPayment % 50 === 0) {
+		console.log(
+			`You will be paid ${weeklyPayment} for ${TOTAL_WEEKS_IN_THREE_YEARS} weeks`
+		);
 	} else {
-		return null;
+		const validPerWeekPayment = weeklyPayment - (weeklyPayment % 50) + 50;
+		const totalWeeks = Math.floor(remainingAmount / validPerWeekPayment);
+		console.log(`You will be paid $${validPerWeekPayment} for ${totalWeeks} weeks`);
 	}
 };
-calculateAmount('weekly', 1200);
+const calculateMontlyAmount = remainingAmount => {
+	const monthlyPayment = remainingAmount / TOTAL_MONTHS_IN_THREE_YEARS;
+	if (monthlyPayment % 50 === 0) {
+		console.log(
+			`You will be paid ${monthlyPayment} for ${TOTAL_MONTHS_IN_THREE_YEARS} weeks`
+		);
+	} else {
+		const validPerMonthPayment = monthlyPayment - (monthlyPayment % 50) + 100;
+		const totalMonths = Math.floor(remainingAmount / validPerMonthPayment);
+		console.log(`You will be paid $${validPerMonthPayment} for ${totalMonths} months`);
+	}
+};
+formulatePayment('weekly', 1000);
