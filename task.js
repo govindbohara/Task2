@@ -1,5 +1,5 @@
 const TOTAL_WEEKS_IN_THREE_YEARS = 156;
-const TOTAL_MONTHS_IN_THREE_YEARS = TOTAL_WEEKS_IN_THREE_YEARS * 4;
+const TOTAL_MONTHS_IN_THREE_YEARS = 36;
 
 const formulatePayment = (choice, amount) => {
 	const initialPayment = (10 / 100) * amount;
@@ -33,4 +33,6 @@ const calculateMontlyAmount = remainingAmount => {
 		console.log(`You will be paid $${validPerMonthPayment} for ${totalMonths} months`);
 	}
 };
-formulatePayment('weekly', 1000);
+
+formulatePayment('monthly', 4594111);
+formulatePayment('weekly', 41111);
